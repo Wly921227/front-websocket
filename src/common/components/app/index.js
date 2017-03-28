@@ -1,15 +1,8 @@
 require('./style.less')
-require('antd/dist/antd.less')
 
 const React = require('react')
 
-const http = require('common/http')
-
 class App extends React.Component {
-
-    componentWillMount() {
-        http.get('/auth/getUser')
-    }
 
     render() {
         return <div className="app">
