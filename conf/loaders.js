@@ -1,6 +1,6 @@
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 
-module.exports = [
+var loaders = [
     // JS
     {
         test: /\.js?$/,
@@ -18,23 +18,45 @@ module.exports = [
             ]
         }
     },
-    // less
-    {
-        test: /\.less?$/,
-        exclude: /(node_modules)/,
-        // loader: 'style!css!less!autoprefixer?browsers=last 2 version&remove=false'
-        loader: ExtractTextPlugin.extract('style', 'css!less!autoprefixer?browsers=last 2 version&remove=false')
-    },
-    // css
-    {
-        test: /\.css?$/,
-        exclude: /(node_modules)/,
-        // loader: 'style!css!autoprefixer?browsers=last 2 version&remove=false'
-        loader: ExtractTextPlugin.extract('style', 'css!autoprefixer?browsers=last 2 version&remove=false')
-    },
     // images
     {
         test: /\.(png|jpg)$/,
         loader: 'url?limit=1000000'   // 单位b
     }
 ]
+
+if (process.env.NODE_ENV === 'production') {
+    // 生产环境css单独打包
+    loaders = loaders.concat(loaders, [
+        // less
+        {
+            test: /\.less?$/,
+            exclude: /(node_modules)/,
+            loader: ExtractTextPlugin.extract('style', 'css!postcss!less')
+        },
+        // css
+        {
+            test: /\.css?$/,
+            exclude: /(node_modules)/,
+            loader: ExtractTextPlugin.extract('style', 'css!postcss')
+        }
+    ])
+} else {
+    // 开发环境css热加载
+    loaders = loaders.concat(loaders, [
+        // less
+        {
+            test: /\.less?$/,
+            exclude: /(node_modules)/,
+            loader: 'style!css!postcss!less',
+        },
+        // css
+        {
+            test: /\.css?$/,
+            exclude: /(node_modules)/,
+            loader: 'style!css!postcss',
+        }
+    ])
+}
+
+module.exports = loaders

@@ -1,10 +1,10 @@
+require('./style.less')
 const React = require('react')
 
 class App extends React.Component {
 
     render() {
-        return <div>
-            <h1>Demo App</h1>
+        return <div className="app">
             {this.props.children}
         </div>
     }

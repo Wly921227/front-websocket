@@ -19,18 +19,15 @@ module.exports = {
     },
     module: {
         loaders: loaders,
-
-        // require
-        // unknownContextRegExp: /$^/,
-        // unknownContextCritical: false,
-
-        // require(expr)
-        // exprContextRegExp: /$^/,
-        // exprContextCritical: false,
-
-        // require("prefix" + expr + "surfix")
-        wrappedContextRegExp: /$^/,
-        wrappedContextCritical: false
+    },
+    postcss: function () {
+        return [
+            require('precss'),
+            require('autoprefixer')({
+                browsers: ['last 2 version', 'ie >= 8'],
+                remove: false
+            })
+        ];
     },
     plugins: [
         new ExtractTextPlugin('css/style.[hash].css'),
