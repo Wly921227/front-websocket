@@ -3,6 +3,7 @@ module.exports = {
         getUser: '/test/getUser'
     },
     auth: {
+        getUser: '/auth/getUser',
         login: '/auth/login'
     }
 }

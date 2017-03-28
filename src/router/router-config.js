@@ -20,22 +20,15 @@ const config = {
                     callback(null, require('pages/TestUser'))
                 }, 'TestUser')
             }
+        },
+        {
+            path: '/login',
+            getComponent: (nextState, callback) => {
+                require.ensure([], (require) => {
+                    callback(null, require('common/components/login'))
+                }, 'hallo')
+            }
         }
-        // { path: 'child', component: Child },
-        // {
-        //     path: 'inbox',
-        //     component: Inbox,
-        //     childRoutes: [{
-        //         path: 'messages/:id',
-        //         onEnter: ({ params }, replace) => replace(`/messages/${params.id}`)
-        //     }]
-        // },
-        // {
-        //     component: Inbox,
-        //     childRoutes: [{
-        //         path: 'messages/:id', component: Message
-        //     }]
-        // }
     ]
 }
 
