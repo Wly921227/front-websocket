@@ -1,6 +1,7 @@
 var path = require('path')
 var webpack = require('webpack')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
+var ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 var webpackBase = require('./webpack.base.config')
 var port = 8081
@@ -49,6 +50,11 @@ config.plugins = (webpackBase.plugins || []).concat(
         },
         // necessary to consistently work with multiple chunks via CommonsChunkPlugin
         chunksSortMode: 'dependency'
+    }),
+    new ExtractTextPlugin('css/style.[hash].css'),
+    new webpack.optimize.CommonsChunkPlugin({
+        minChunks: 2,
+        name: ['vendor']
     })
 )
 

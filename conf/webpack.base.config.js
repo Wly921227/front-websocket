@@ -2,7 +2,6 @@ var path = require('path')
 var loaders = require('./loaders')
 
 var webpack = require('webpack')
-var ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 module.exports = {
     entry: {
@@ -28,12 +27,5 @@ module.exports = {
                 remove: false
             })
         ];
-    },
-    plugins: [
-        new ExtractTextPlugin('css/style.[hash].css'),
-        new webpack.optimize.CommonsChunkPlugin({
-            minChunks: 2,
-            name: ['vendor']
-        })
-    ]
+    }
 }
