@@ -1,6 +1,7 @@
 const http = require('superagent')
 const nocache = require('superagent-no-cache')
 const prefix = require('superagent-prefix')('/api')
+const Router = require('react-router')
 
 const _ = require('lodash')
 const utils = require('../utils')
@@ -27,7 +28,8 @@ module.exports = {
         let page = url[0]
         let todo = url[1]
         let uri = (urls[page] && urls[page][todo]) ? urls[page][todo] : opt.url
-        let func = (adapter[page] && adapter[page][todo]) ? adapter[page][todo] : (data) => {
+        let func = (adapter[page] && adapter[page][todo]) ?
+            adapter[page][todo] : (data) => {
                 return data
             }
         let request
@@ -36,20 +38,21 @@ module.exports = {
                 .set('Accept', 'application/json')
         } else if (opt.type === 'POST') {
             request = http.post(uri).send(opt.data)
-                // .set('Content-Type', 'application/x-www-form-urlencoded')
                 .set('Content-Type', 'application/json')
         }
 
-        request.use(prefix).use(nocache)
-            .timeout({
-                response: 5000  // Wait 5 seconds for the server to start sending,
-            })
-            .then(res => {
+        request.use(prefix).use(nocache).timeout({
+            response: 5000  // Wait 5 seconds for the server to start sending,
+        }).then(res => {
             if (res.status === 200) {
                 if (res.body.code === 200) {
                     return func(res.body)
                 } else {
-                    // TODO 后台提示信息处理
+                    if (res.body.msg === 'unLogin') {
+                        Router.hashHistory.push('/login')
+                    } else {
+                        // TODO 异常提示处理
+                    }
                 }
             } else {
                 // TODO 异常提示处理
@@ -59,6 +62,16 @@ module.exports = {
         return {
             then (func) {
                 request.then(res => {
+                    func(res.body)
+                })
+            },
+            catch (func) {
+                request.catch(res => {
+                    func(res.body)
+                })
+            },
+            finally (func) {
+                request.finally(res => {
                     func(res.body)
                 })
             }
