@@ -21,8 +21,8 @@ Object.getOwnPropertyNames((webpackBase.entry || {})).map(function (name) {
 config.output = {
     path: path.resolve(__dirname, '../static/'),
     publicPath: httpPath,
-    filename: 'js/[name].bundle.js',
-    chunkFilename: "js/[name].js"
+    filename: 'js/[name].bundle.js'
+    // chunkFilename: "js/[name].js"
 }
 
 // webpack-dev-server

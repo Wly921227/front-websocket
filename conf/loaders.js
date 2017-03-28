@@ -1,4 +1,5 @@
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
+var path = require('path')
 
 var loaders = [
     // JS
@@ -7,10 +8,13 @@ var loaders = [
         exclude: /(node_modules)/,
         loader: 'babel', // 'babel-loader' is also a legal name to reference
         query: {
+            cacheDirectory: true,
             plugins: [
                 'transform-decorators-legacy',
-                'react-hot-loader/babel'
-            ],   /// 使用decorator写法
+                'react-hot-loader/babel',
+                'transform-runtime',
+                ['import', {libraryName: 'antd'}]   // 使用antd必须
+            ],   // 使用decorator写法
             presets: [
                 'es2015',
                 'stage-2',
@@ -31,13 +35,13 @@ if (process.env.NODE_ENV === 'production') {
         // less
         {
             test: /\.less?$/,
-            exclude: /(node_modules)/,
+            exclude: /(node_modules\/(?!(antd)\/)).*/,
             loader: ExtractTextPlugin.extract('style', 'css!postcss!less')
         },
         // css
         {
             test: /\.css?$/,
-            exclude: /(node_modules)/,
+            exclude: /(node_modules\/(?!(antd)\/)).*/,
             loader: ExtractTextPlugin.extract('style', 'css!postcss')
         }
     ])
@@ -47,13 +51,13 @@ if (process.env.NODE_ENV === 'production') {
         // less
         {
             test: /\.less?$/,
-            exclude: /(node_modules)/,
+            exclude: /(node_modules\/(?!(antd|test)\/)).*/,  // 正则排除antd || test 可匹配其它目录
             loader: 'style!css!postcss!less',
         },
         // css
         {
             test: /\.css?$/,
-            exclude: /(node_modules)/,
+            exclude: /(node_modules\/(?!(antd)\/)).*/,
             loader: 'style!css!postcss',
         }
     ])

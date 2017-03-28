@@ -26,7 +26,7 @@ const config = {
             getComponent: (nextState, callback) => {
                 require.ensure([], (require) => {
                     callback(null, require('common/components/login'))
-                }, 'hallo')
+                }, 'login')
             }
         }
     ]

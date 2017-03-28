@@ -1,4 +1,6 @@
 require('./style.less')
+require('antd/dist/antd.less')
+
 const React = require('react')
 
 const http = require('common/http')
