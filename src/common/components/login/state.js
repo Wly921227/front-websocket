@@ -15,7 +15,6 @@ class State {
                 upassword: this.password
             }
         }).then(data => {
-            console.log(data)
             if (data.success) {
                 ReactRouter.hashHistory.push('/')
             }

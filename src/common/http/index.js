@@ -1,7 +1,6 @@
 const http = require('superagent')
 const nocache = require('superagent-no-cache')
 const prefix = require('superagent-prefix')('/api')
-const Router = require('react-router')
 
 const _ = require('lodash')
 const utils = require('../utils')
@@ -42,17 +41,13 @@ module.exports = {
         }
 
         request.use(prefix).use(nocache).timeout({
-            response: 5000  // Wait 5 seconds for the server to start sending,
+            response: 30000  // Wait 5 seconds for the server to start sending,
         }).then(res => {
             if (res.status === 200) {
                 if (res.body.code === 200) {
                     return func(res.body)
                 } else {
-                    if (res.body.msg === 'unLogin') {
-                        Router.hashHistory.push('/login')
-                    } else {
-                        // TODO 异常提示处理
-                    }
+                    // TODO 异常提示处理
                 }
             } else {
                 // TODO 异常提示处理

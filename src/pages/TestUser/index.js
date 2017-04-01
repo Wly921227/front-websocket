@@ -1,4 +1,5 @@
 const React = require('react')
+const Router = require('react-router')
 
 const $http = require('common/http')
 
@@ -8,6 +9,14 @@ class Test extends React.Component {
         this.setState({
             users: []
         })
+        $http.get({
+            url: '/auth/getUser',
+        }).then(data => {
+            console.log(data)
+        })
+    }
+
+    login() {
         $http.post({
             url: '/auth/login',
             data: {
@@ -16,30 +25,13 @@ class Test extends React.Component {
             }
         }).then(data => {
             console.log(data)
-        })
-        $http.get({
-            url: '/test/getUser',
-            data: {
-                uId: 1
-            }
-        }).then(data => {
-            this.setState({
-                users: data.result
-            })
+            Router.hashHistory.push('/')
         })
     }
 
     render() {
-        let users = this.state.users.map(value => {
-            return <div key={value.u_id} className="user">
-                <div className="id">{value.u_id}</div>
-                <div className="name">{value.u_name}</div>
-                <div className="nickname">{value.u_nickname}</div>
-            </div>
-        })
-
         return <div className="users">
-            {users}
+            <button onClick={this.login.bind(this)}>点我</button>
         </div>
     }
 
